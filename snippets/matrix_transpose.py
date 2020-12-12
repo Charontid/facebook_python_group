@@ -6,21 +6,24 @@ def main():
         [i*columns+j for j in range(columns)]
         for i in range(rows)
     ]
+
     print_matrix(matrix)
     print()
 
     #as list comprehension:
-    transpose = [
-        [matrix[i][j] for i, _ in enumerate(matrix)]
-        for j, _ in enumerate(matrix[0])
-    ]
+    transpose = comprehension_transpose(matrix)
     print_matrix(transpose)
     print()
 
+    #as list comprehension, getting rid of inner indexing:
+    transpose = comprehension_transpose2(matrix)
+
+    #nested for-loops
     transpose2 = transpose_matrix(matrix)
     print_matrix(transpose2)
     print()
 
+    #zip() - function
     transpose3 = zipped_transpose(matrix)
     print_matrix(transpose3)
 
@@ -39,6 +42,20 @@ def transpose_matrix(m):
             transpose[j][i] = m[i][j]
     return transpose
 
+def comprehension_transpose(m):
+    return [
+        [m[i][j] for i, _ in enumerate(m)]
+        for j, _ in enumerate(m[0])
+    ]
+
+def comprehension_transpose2(m):
+    """ suggestion from David Choweller
+        - simplifying the inner loop
+    """
+    return [
+        [row[col] for row in m]
+        for col, _ in enumerate(m[0])
+    ]
 
 def zipped_transpose(m):
     transpose = [list(x) for x in zip(*m)]
